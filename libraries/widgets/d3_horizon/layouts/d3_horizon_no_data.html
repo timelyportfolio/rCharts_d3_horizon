@@ -13,11 +13,9 @@ var svg = d3.select('#' + params.id).append("svg")
 var chart = d3.horizon()
     .width(params.width)
     .height(params.height)
-    .bands(params.bands)
+    .bands(params.band)
     .mode(params.mode)
     .interpolate(params.interpolate);
     
-data = [params.data.map(function(d) {return[d[params.x],d[params.y]]})]    
-    
-svg.data(data).call(chart)
+svg.data(params.data).call(chart)
 </script>

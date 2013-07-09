@@ -155,6 +155,8 @@ nvd3:
 You might wonder if we will ever fix our error and see a horizon plot.  Let's do both at the same time in the next section.
 
 ---
+<br/>
+### Convert the Horizon
 <h4>Finally, Fix Our Error and Start to See the Horizon</h4>
 The reason for our error
 ```
@@ -204,10 +206,10 @@ In R, we can set these with `set` like this
 ```{r}
 rChart$set(
   bands = 3,
-  mode = "offset",
-  interpolate = "linear",
+  mode = "mirror",
+  interpolate = "basis",
   width = 960,
-  height = 40
+  height = 300
 )
 ```
 and all of these will go into the `rCharts$params` list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache `{ params }`.
@@ -234,7 +236,7 @@ svg.data([data]).call(chart);
 We will change them just slightly to the following (I escape the {} with a backslash so they show up).
 
 ```
-var params = \{\{\{ chartParams \}\}\};
+var params = {{{ chartParams }}};
 
 var svg = d3.select('#' + params.id).append("svg")
     .attr("width", params.width)
@@ -247,15 +249,15 @@ var chart = d3.horizon()
     .mode(params.mode)
     .interpolate(params.interpolate);
     
-svg.data(params.data).call(chart);
+svg.data(params.data).call(chart)
 ```
 
-If you are following along at home, copy and paste that into your script template chart.html.  You can see mine [here](https://github.com/timelyportfolio/rCharts_d3_horizon/blob/gh-pages/libraries/widgets/d3_horizon/layouts/d3_horizon.html).
+If you are following along at home, copy and paste that into your script template chart.html.  You can see mine [here](https://github.com/timelyportfolio/rCharts_d3_horizon/blob/gh-pages/libraries/widgets/d3_horizon/layouts/d3_horizon_no_data.html).
 
 <h4>Supply the Data</h4>
 Those paying real close attention will know `params$data` has not been defined.  Let's supply some data.
 
-```{r}
+```{r warning = F}
 require(quantmod)
 #get sp500 prices and convert them to monthly
 SP500 <- to.monthly(
@@ -264,13 +266,38 @@ SP500 <- to.monthly(
 #get 12 month rolling return
 SP500.ret <- na.omit(ROC(SP500[,4], type = "discrete", n = 12))
 SP500.df <- cbind(
-  format(as.Date(index(SP500.ret)), "%Y-%d-%m"),
+  as.numeric(as.POSIXct(as.Date(index(SP500.ret)))),
   coredata(SP500.ret)
 )
 colnames(SP500.df) <- c("date","SP500")
 
 #supply the data to our dataless but no longer naked rChart
 rChart$set(data = SP500.df)
+```
+You might think we are done, but if you call `rChart` our error is fixed, but we get a new error in the browser because we did not transform our data.  This is a common, sometimes easily fixed, sometimes very difficult piece.  If we debug the example, we will see the data is provided as an array of arrays.
+
+![Screenprint of Expected Data](images/expected_data.png)
+
+Real quickly, now is a great time to cover how everything is converted from R vectors, lists, data.frames, etc. to javascript.  This all happens with the R package [`RJSONIO`](http://cran.r-project.org/web/packages/RJSONIO/index.html).  In this case, our `params$data` is converted to `JSON` as an array of objects.
+
+We will need to allow an `x` and `y` to be specified in `R`
+
+```{r}
+rChart$set(x = "date", y = "SP500")
+```
+
+and write a simple javascript `map` transform to do the conversion in our script template
+
+```
+data = [params.data.map(function(d) {return[d[params.x],d[params.y]]})];
+
+svg.data(data).call(chart);
+```
+
+Now for the magic moment.
+
+```{r}
+rChart
 ```
 
 
