@@ -85,7 +85,7 @@ str(rChart)
 
 Reference class 'rCharts' [package "rCharts"] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr "charteb81cc117fb"
+  ..$ dom   : chr "charteb82eb2420d"
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr "rcharts"
@@ -263,7 +263,7 @@ svg.data([data]).call(chart);
 We will change them just slightly to the following (I escape the {} with a backslash so they show up).
 
 ```
-var params = {{{ chartParams }}};
+var params = {\{\{ chartParams }\}\};
 
 var svg = d3.select('#' + params.id).append("svg")
     .attr("width", params.width)
@@ -343,7 +343,7 @@ rChart
 ```
 
 
-<div id='charteb81cc117fb' class='rChart d3_horizon'></div>
+<div id='charteb82eb2420d' class='rChart d3_horizon'></div>
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
 Mike Bostock http://bl.ocks.org/mbostock/1483226
@@ -351,10 +351,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "charteb81cc117fb",
+ "dom": "charteb82eb2420d",
 "width":    960,
 "height":    300,
-"id": "charteb81cc117fb",
+"id": "charteb82eb2420d",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",

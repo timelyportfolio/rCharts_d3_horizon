@@ -236,7 +236,7 @@ svg.data([data]).call(chart);
 We will change them just slightly to the following (I escape the {} with a backslash so they show up).
 
 ```
-var params = {{{ chartParams }}};
+var params = {\{\{ chartParams }\}\};
 
 var svg = d3.select('#' + params.id).append("svg")
     .attr("width", params.width)
