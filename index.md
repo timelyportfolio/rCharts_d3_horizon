@@ -4,9 +4,9 @@ author: Timely Portfolio
 github: {user: timelyportfolio, repo: rCharts_d3_horizon, branch: "gh-pages"}
 framework: bootstrap
 mode: selfcontained
-widgets: "d3_horizon"
 highlighter: prettify
 hitheme: twitter-bootstrap
+widgets: "d3_horizon"
 assets:
   css:
     - "http://fonts.googleapis.com/css?family=Raleway:300"
@@ -71,7 +71,7 @@ This tutorial will go in depth to explain some of the inner workings of `rCharts
 <br/>
 ### rCharts Innards
 <h4>A Naked rChart</h4>
-Only if it matters to you, a [`rChart`](https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R) is a [R5 object or reference class](https://github.com/hadley/devtools/wiki/R5).  If it doesn't matter to you, just forget what I just said.  Let's see what a naked rChart looks like.
+What does a naked rChart look like?
 
 
 ```r
@@ -85,7 +85,7 @@ str(rChart)
 ```
 ## Reference class 'rCharts' [package "rCharts"] with 8 fields
 ##  $ params   :List of 3
-##   ..$ dom   : chr "chart25484f9962cf"
+##   ..$ dom   : chr "charteb8717a58db"
 ##   ..$ width : num 800
 ##   ..$ height: num 400
 ##  $ lib      : chr "rcharts"
@@ -104,6 +104,42 @@ str(rChart)
 ##    addParams, getPayload, html, initialize, print, publish, render, save,
 ##    set, setLib, setTemplate, show#envRefClass
 ```
+
+Only if it matters to you, a [`rChart`](https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R) is a [R5 object or reference class](https://github.com/hadley/devtools/wiki/R5).  If it doesn't matter to you, just forget what I just said.  As the `str` output tells us, this rChart has 8 fields and 24 methods (functions), of which 12 "are possibly relevant".  I am guessing some like `width` and `height` do not need much explanation, but the others might not be immediately understood.  Since I learn by breaking, what happens if we call `rChart`?
+
+
+```r
+rChart
+```
+
+```
+## Warning: cannot open file '/layouts/chart.html': No such file or directory
+```
+
+
+---
+<h4>Templates with Mustaches</h4>
+
+Darn it didn't work, but we did get a clue `/layouts/chart.html`.  This falls into the `templates` field in the `str` output above and looks like a file and directory.  I guess it would be wise to inspect this `templates` field.  In it, we find `page`, `chartDiv`, and `script`.  `page` and `script` look like html files, so let's find out where these are and what's inside.  `page` is defined as rChart.html, which is inside your `R` rCharts package.  You can see for yourself by typing the following in `R`:
+
+
+```r
+readLines(system.file("rChart.html", package = "rCharts"))
+```
+
+
+or you can also find the rChart.html [here in source](https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html).  I would show it, but all these `{` and `}` do not show up. The reason why they don't show up is also some of the magic behind rCharts.  These multiple `{` and `}` are mustaches and get filled through the `R` package [`whisker`](https://github.com/edwindj/whisker) as described in the `whisker` [Readme.md](https://github.com/edwindj/whisker/blob/master/readme.md).
+
+<blockquote>Whisker is a {{Mustache}} implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
+
+Mustache (and therefore whisker) takes a simple, but different, approach to templating compared to most templating engines. Most templating libraries, such as Sweave, knitr and brew, allow the user to mix programming code and text throughout the template. This is powerful, but ties your template directly to a programming language and makes it difficult to seperate programming code from templating code.
+
+Whisker, on the other hand, takes a Mustache template and uses the variables of the current environment (or the supplied list) to fill in the variables.
+</blockquote>
+
+So all these multiple mustaches `{` `}` will get filled with R variables or function ouptut.
+
+
 
 
 <h4>Get Data and Transform</h4>

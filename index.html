@@ -111,7 +111,7 @@ g-table-intro h4 {
 
 <h4>A Naked rChart</h4>
 
-<p>Only if it matters to you, a <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R"><code>rChart</code></a> is a <a href="https://github.com/hadley/devtools/wiki/R5">R5 object or reference class</a>.  If it doesn&#39;t matter to you, just forget what I just said.  Let&#39;s see what a naked rChart looks like.</p>
+<p>What does a naked rChart look like?</p>
 
 <pre><code class="r"># if you do not have rCharts or if you have an outdated version
 # require(devtools) install_github(&#39;rCharts&#39;, &#39;ramnathv&#39;)
@@ -122,7 +122,7 @@ str(rChart)
 
 <pre><code>## Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
 ##  $ params   :List of 3
-##   ..$ dom   : chr &quot;chart25484f9962cf&quot;
+##   ..$ dom   : chr &quot;charteb8717a58db&quot;
 ##   ..$ width : num 800
 ##   ..$ height: num 400
 ##  $ lib      : chr &quot;rcharts&quot;
@@ -141,6 +141,31 @@ str(rChart)
 ##    addParams, getPayload, html, initialize, print, publish, render, save,
 ##    set, setLib, setTemplate, show#envRefClass
 </code></pre>
+
+<p>Only if it matters to you, a <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R"><code>rChart</code></a> is a <a href="https://github.com/hadley/devtools/wiki/R5">R5 object or reference class</a>.  If it doesn&#39;t matter to you, just forget what I just said.  As the <code>str</code> output tells us, this rChart has 8 fields and 24 methods (functions), of which 12 &quot;are possibly relevant&quot;.  I am guessing some like <code>width</code> and <code>height</code> do not need much explanation, but the others might not be immediately understood.  Since I learn by breaking, what happens if we call <code>rChart</code>?</p>
+
+<pre><code class="r">rChart
+</code></pre>
+
+<pre><code>## Warning: cannot open file &#39;/layouts/chart.html&#39;: No such file or directory
+</code></pre>
+
+<h4>Templates with Mustaches</h4>
+<p>Darn it didn&#39;t work, but we did get a clue <code>/layouts/chart.html</code>.  This falls into the <code>templates</code> field in the <code>str</code> output above and looks like a file and directory.  I guess it would be wise to inspect this <code>templates</code> field.  In it, we find <code>page</code>, <code>chartDiv</code>, and <code>script</code>.  <code>page</code> and <code>script</code> look like html files, so let&#39;s find out where these are and what&#39;s inside.  <code>page</code> is defined as rChart.html, which is inside your <code>R</code> rCharts package.  You can see for yourself by typing the following in <code>R</code>:</p>
+
+<pre><code class="r">readLines(system.file(&quot;rChart.html&quot;, package = &quot;rCharts&quot;))
+</code></pre>
+
+<p>or you can also find the rChart.html <a href="https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html">here in source</a>.  I would show it, but all these <code>{</code> and <code>}</code> do not show up. The reason why they don&#39;t show up is also some of the magic behind rCharts.  These multiple <code>{</code> and <code>}</code> are mustaches and get filled through the <code>R</code> package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> as described in the <code>whisker</code> <a href="https://github.com/edwindj/whisker/blob/master/readme.md">Readme.md</a>.</p>
+
+<blockquote>Whisker is a  implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
+
+Mustache (and therefore whisker) takes a simple, but different, approach to templating compared to most templating engines. Most templating libraries, such as Sweave, knitr and brew, allow the user to mix programming code and text throughout the template. This is powerful, but ties your template directly to a programming language and makes it difficult to seperate programming code from templating code.
+
+Whisker, on the other hand, takes a Mustache template and uses the variables of the current environment (or the supplied list) to fill in the variables.
+</blockquote>
+
+<p>So all these multiple mustaches <code>{</code> <code>}</code> will get filled with R variables or function ouptut.</p>
 
 <h4>Get Data and Transform</h4>
 
