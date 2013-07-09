@@ -150,7 +150,7 @@ nvd3:
       - "http://nvd3.org/nv.d3.js"
       - "http://nvd3.org/lib/fisheye.js"
 ```
-`rCharts` is smart enough to handle the css and js for both a local rendering and a rendering which might be happier served from a CDN.  `whisker` and `mustache` are smart enough to handle array type structures to list each file if there are more than one file.
+`rCharts` is smart enough to handle the css and js for both a local rendering and a rendering which might be happier served from a CDN.  `whisker` and `mustache` are smart enough to handle array type structures to list each file if there is more than one file.
 
 You might wonder if we will ever fix our error and see a horizon plot.  Let's do both at the same time in the next section.
 

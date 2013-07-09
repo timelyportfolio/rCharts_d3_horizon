@@ -85,7 +85,7 @@ str(rChart)
 
 Reference class 'rCharts' [package "rCharts"] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr "charteb8296a3312"
+  ..$ dom   : chr "charteb81cc117fb"
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr "rcharts"
@@ -169,7 +169,7 @@ nvd3:
       - "http://nvd3.org/nv.d3.js"
       - "http://nvd3.org/lib/fisheye.js"
 ```
-`rCharts` is smart enough to handle the css and js for both a local rendering and a rendering which might be happier served from a CDN.  `whisker` and `mustache` are smart enough to handle array type structures to list each file if there are more than one file.
+`rCharts` is smart enough to handle the css and js for both a local rendering and a rendering which might be happier served from a CDN.  `whisker` and `mustache` are smart enough to handle array type structures to list each file if there is more than one file.
 
 You might wonder if we will ever fix our error and see a horizon plot.  Let's do both at the same time in the next section.
 
@@ -343,7 +343,7 @@ rChart
 ```
 
 
-<div id='charteb8296a3312' class='rChart d3_horizon'></div>
+<div id='charteb81cc117fb' class='rChart d3_horizon'></div>
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
 Mike Bostock http://bl.ocks.org/mbostock/1483226
@@ -351,10 +351,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "charteb8296a3312",
+ "dom": "charteb81cc117fb",
 "width":    960,
 "height":    300,
-"id": "charteb8296a3312",
+"id": "charteb81cc117fb",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
