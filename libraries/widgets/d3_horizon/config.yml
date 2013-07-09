@@ -1,0 +1,7 @@
+d3_horizon:
+  css: [css/base.css]
+  jshead: [js/d3.v3.js,js/horizon.js]
+  cdn:
+    jshead: 
+      - "http://d3js.org/d3.v3.min.js"
+

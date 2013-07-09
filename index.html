@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>rCharts Extra - d3 Horizon Conversion</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <style>
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+  </style>
+  
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.no-responsive.no-icons.min.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<link  rel="stylesheet" 
+    href="http://netdna.bootstrapcdn.com/font-awesome/2.0/css/font-awesome.css">
+  <link rel="stylesheet" href="libraries/frameworks/bootstrap/css/bootstrap-responsive.min.css">
+  
+  <link rel="stylesheet" href="libraries/frameworks/bootstrap/css/main.css">
+  <link rel="stylesheet" href="libraries/highlighters/prettify/css/twitter-bootstrap.css" />
+  <script src="libraries/frameworks/bootstrap/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/frameworks/bootstrap/js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+    <link rel=stylesheet href="libraries/widgets/d3_horizon/css/base.css"></link>
+<link rel=stylesheet href="http://fonts.googleapis.com/css?family=Raleway:300"></link>
+<link rel=stylesheet href="http://fonts.googleapis.com/css?family=Oxygen"></link>
+
+  <script src="libraries/widgets/d3_horizon/js/d3.v3.js"></script>
+<script src="libraries/widgets/d3_horizon/js/horizon.js"></script>
+
+</head>
+<body>
+   <!--[if lt IE 7]>
+     <p class="chromeframe">You are using an outdated browser. 
+       <a href="http://browsehappy.com/">Upgrade your browser today</a> or 
+       <a href="http://www.google.com/chromeframe/?redirect=true"> 
+         install Google Chrome Frame
+       </a> to better experience this site.
+    </p>
+   <![endif]-->
+   <!-- Ref: http://twitter.github.com/bootstrap/examples/hero.html -->
+   
+    <div class="container">
+      
+<style>
+body{
+  font-family: 'Oxygen', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+h1,h2,h3,h4 {
+  font-family: 'Raleway', sans-serif;
+}
+
+.container { width: 1000px; }
+
+h3 {
+  background-color: #D4DAEC;
+  text-indent: 100px; 
+}
+
+h4 {
+  text-indent: 100px;
+}
+
+g-table-intro h4 {
+  text-indent: 0px;
+}
+</style>
+
+<p><a href="https://github.com/timelyportfolio/rCharts_d3_horizon"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a></p>
+
+<h1>rCharts Conversion of d3 Horizon Plot Plugin</h1>
+
+
+<p><br/></p>
+
+<h3>Disclaimer and Attribution</h3>
+
+<p><strong>Much of this work is based on the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot plugin</a> by Jason Davies and the <a href="http://bl.ocks.org/mbostock/1483226">example</a> by Mike Bostock.</strong> </p>
+
+
+<p><br/></p>
+
+<h3>rCharts Extra</h3>
+
+<p><a href="http://rcharts.io/site"><code>rCharts</code></a> provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around <a href="http://d3js.org">d3.js</a>.  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately <code>rCharts</code> is designed to also easily accommodate custom charts.</p>
+
+<p>There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots, summarized in <a href="http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html">Horizon Plots with plot.xts</a> and explained in <a href="http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html">More on Horizon Charts</a>, the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot d3 plugin</a> from Jason Davies will be our target.</p>
+
+<p>This tutorial will go in depth to explain some of the inner workings of <code>rCharts</code> as we work through an implementation of d3 horizon plots.  We will see how <code>rCharts</code></p>
+
+<ul>
+<li>employs <a href="http://www.yaml.org/">YAML</a> through the R package <a href="http://cran.r-project.org/web/packages/yaml/index.html"><code>yaml</code></a> for configuration,</li>
+<li>uses <a href="http://mustache.github.io/">mustache templates</a> through the R package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> to bind html/js with <code>R</code>, and</li>
+<li>passes data and parameters with <a href="http://cran.r-project.org/web/packages/RJSONIO/index.html"><code>RJSONIO</code></a>.</li>
+</ul>
+
+
+<p><br/></p>
+
+<h3>rCharts Innards</h3>
+
+<h4>A Naked rChart</h4>
+
+<p>Only if it matters to you, a <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R"><code>rChart</code></a> is a <a href="https://github.com/hadley/devtools/wiki/R5">R5 object or reference class</a>.  If it doesn&#39;t matter to you, just forget what I just said.  Let&#39;s see what a naked rChart looks like.</p>
+
+<pre><code class="r"># if you do not have rCharts or if you have an outdated version
+# require(devtools) install_github(&#39;rCharts&#39;, &#39;ramnathv&#39;)
+require(rCharts)
+rChart &lt;- rCharts$new()
+str(rChart)
+</code></pre>
+
+<pre><code>## Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
+##  $ params   :List of 3
+##   ..$ dom   : chr &quot;chart25484f9962cf&quot;
+##   ..$ width : num 800
+##   ..$ height: num 400
+##  $ lib      : chr &quot;rcharts&quot;
+##  $ LIB      :List of 2
+##   ..$ name: chr &quot;rcharts&quot;
+##   ..$ url : chr &quot;&quot;
+##  $ srccode  : NULL
+##  $ tObj     : list()
+##  $ container: chr &quot;div&quot;
+##  $ html_id  : chr &quot;&quot;
+##  $ templates:List of 3
+##   ..$ page    : chr &quot;rChart.html&quot;
+##   ..$ chartDiv: NULL
+##   ..$ script  : chr &quot;/layouts/chart.html&quot;
+##  and 24 methods, of which 12 are possibly relevant:
+##    addParams, getPayload, html, initialize, print, publish, render, save,
+##    set, setLib, setTemplate, show#envRefClass
+</code></pre>
+
+<h4>Get Data and Transform</h4>
+
+<h3>Thanks</h3>
+
+<p>As I hope you can tell, this post was more a function of the efforts of others than of my own.</p>
+
+<p>Thanks specifically:</p>
+
+<ul>
+<li>Ramnath Vaidyanathan for <a href="http://rcharts.io/site">rCharts</a> and <a href="http://slidify.org">slidify</a>.</li>
+<li><a href="http://www.jasondavies.com/">Jason Davies</a> for the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">Horizon Chart d3 plugin</a> and all his contributions and examples.</li>
+<li><a href="http://bost.ocks.org/mike/">Mike Bostock</a> for everything.</li>
+<li>Google fonts <a href="http://www.google.com/fonts/specimen/Raleway">Raleway</a> and <a href="http://www.google.com/fonts/specimen/Oxygen">Oxygen</a></li>
+</ul>
+
+    </div>
+        
+</body>
+  <script src="libraries/frameworks/bootstrap/js/vendor/bootstrap.min.js"></script>
+  <script src="libraries/frameworks/bootstrap/js/plugins.js"></script>
+  <script src="libraries/frameworks/bootstrap/js/main.js"></script>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
+  </html>
