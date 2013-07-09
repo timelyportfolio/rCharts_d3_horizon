@@ -165,7 +165,39 @@ Mustache (and therefore whisker) takes a simple, but different, approach to temp
 Whisker, on the other hand, takes a Mustache template and uses the variables of the current environment (or the supplied list) to fill in the variables.
 </blockquote>
 
-<p>So all these multiple mustaches <code>{</code> <code>}</code> will get filled with R variables or function ouptut.</p>
+<p>So all these multiple mustaches <code>{</code> <code>}</code> will get filled with <code>R</code> variables or function output.  For instance, the three mustache <code>chartId</code> will get populated by the R variable <code>chartId</code>.  This gets assigned in the <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64"><code>render</code> method</a> <code>chartId = params$dom</code>.  If we look back at our <code>str</code> output above we see</p>
+
+<pre><code>$ params   :List of 3
+   ..$ dom   : chr &quot;charteb8717a58db&quot;
+</code></pre>
+
+<p>so once we fix our error (nope, still haven&#39;t even come close to fixing), we should see this is our html output.  Now let&#39;s see why our mustache is full of <a href="http://www.yaml.org/">YAML</a>.</p>
+
+<h4>Mustache Full of YAML</h4>
+<p>If we are working with html/js, we have to expect some js and css file dependencies that we will need to load.  <code>rCharts</code> looks for a <a href="http://www.yaml.org/">YAML</a> file config.yml to tell us the location for all these js and css files.  This <a href="%5BYAML%5D(https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L63">line</a></p>
+
+<pre><code> assets = get_assets(LIB, static = T, cdn = cdn)
+</code></pre>
+
+<p>calls this <a href="https://github.com/ramnathv/rCharts/blob/master/R/utils.R#L34">line</a></p>
+
+<pre><code>get_assets &lt;- function(LIB, static = T, cdn = F){
+  config = yaml.load_file(file.path(LIB$url, &#39;config.yml&#39;))[[1]]
+</code></pre>
+
+<p>which parses the YAML for our js and css file locations.  As an example, below is the <a href="https://github.com/ramnathv/rCharts/blob/master/inst/libraries/nvd3/config.yml">config.yml</a> for the <code>rCharts</code> implementation of <code>NVD3</code>.</p>
+
+<pre><code>nvd3:
+  css: [css/nv.d3.css, css/rNVD3.css]
+  jshead: [js/jquery-1.8.2.min.js, js/d3.v3.min.js, &quot;js/nv.d3.min-new.js&quot;, js/fisheye.js]
+  cdn:
+    css: http://nvd3.org/src/nv.d3.css
+    jshead: 
+      - &quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js&quot;
+      - &quot;http://d3js.org/d3.v2.min.js&quot;
+      - &quot;http://nvd3.org/nv.d3.js&quot;
+      - &quot;http://nvd3.org/lib/fisheye.js&quot;
+</code></pre>
 
 <h4>Get Data and Transform</h4>
 
