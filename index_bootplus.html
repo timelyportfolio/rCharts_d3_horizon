@@ -110,8 +110,6 @@ h1,h2,h3,h4 {
 }
 </style>
 
-<p><a href="https://github.com/timelyportfolio/rCharts_d3_horizon"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a></p>
-
 <p><a href="http://rcharts.io/site"><code>rCharts</code></a> provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around <a href="http://d3js.org">d3.js</a>.  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately <code>rCharts</code> is designed to also easily accommodate custom charts.</p>
 
 <p>There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots, summarized in <a href="http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html">Horizon Plots with plot.xts</a> and explained in <a href="http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html">More on Horizon Charts</a>, the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot d3 plugin</a> from Jason Davies will be our target.</p>
@@ -150,7 +148,7 @@ str(rChart)
 
 <p>Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr &quot;charteb85a9a11b4&quot;
+  ..$ dom   : chr &quot;chart20c07ea1c8a&quot;
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr &quot;rcharts&quot;
@@ -387,7 +385,7 @@ svg.data(data).call(chart);
 <pre><code class="r">rChart
 </code></pre>
 
-<div id='charteb85a9a11b4' class='rChart d3_horizon'></div>
+<div id='chart20c07ea1c8a' class='rChart d3_horizon'></div>
 
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
@@ -396,10 +394,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "charteb85a9a11b4",
+ "dom": "chart20c07ea1c8a",
 "width":    700,
 "height":    300,
-"id": "charteb85a9a11b4",
+"id": "chart20c07ea1c8a",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",

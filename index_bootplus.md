@@ -26,8 +26,6 @@ h1,h2,h3,h4 {
 }
 </style>
 
-<a href="https://github.com/timelyportfolio/rCharts_d3_horizon"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-
 
 [`rCharts`](http://rcharts.io/site) provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around [d3.js](http://d3js.org).  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately `rCharts` is designed to also easily accommodate custom charts.
 
@@ -65,7 +63,7 @@ str(rChart)
 
 Reference class 'rCharts' [package "rCharts"] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr "charteb85a9a11b4"
+  ..$ dom   : chr "chart20c07ea1c8a"
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr "rcharts"
@@ -319,7 +317,7 @@ rChart
 ```
 
 
-<div id='charteb85a9a11b4' class='rChart d3_horizon'></div>
+<div id='chart20c07ea1c8a' class='rChart d3_horizon'></div>
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
 Mike Bostock http://bl.ocks.org/mbostock/1483226
@@ -327,10 +325,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "charteb85a9a11b4",
+ "dom": "chart20c07ea1c8a",
 "width":    700,
 "height":    300,
-"id": "charteb85a9a11b4",
+"id": "chart20c07ea1c8a",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
