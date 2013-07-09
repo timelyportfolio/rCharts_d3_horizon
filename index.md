@@ -174,10 +174,110 @@ nvd3:
       - "http://nvd3.org/nv.d3.js"
       - "http://nvd3.org/lib/fisheye.js"
 ```
+`rCharts` is smart enough to handle the css and js for both a local rendering and a rendering which might be happier served from a CDN.  `whisker` and `mustache` are smart enough to handle array type structures to list each file if there are more than one file.
+
+You might wonder if we will ever fix our error and see a horizon plot.  Let's do both at the same time in the next section.
+
+---
+<h4>Finally, Fix Our Error and Start to See the Horizon</h4>
+The reason for our error
+```
+## Warning: cannot open file '/layouts/chart.html': No such file or directory
+```
+is mustache tries to fill the `{script}` portion of rChart.html with a file specified by  which is
 
 
+```r
+rChart$templates$script
+```
+
+```
+## [1] "/layouts/chart.html"
+```
+
+which might or might not exist.  We can get away with not specifying the location of `templates$page` (rChart.html).  It is designed to be fairly universal, so there is a default in the rCharts package, but the script template for each library or custom implementation will be different.  In each of the library implementations, `templates$script` will be populated at initialization in these [two lines of code](https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L8).
+```
+lib <<- tolower(as.character(class(.self)))
+LIB <<- get_lib(lib) # library name and url to library folder
+```
+Here is the [chart.html script template](https://github.com/ramnathv/rCharts/blob/master/inst/libraries/nvd3/layouts/chart.html) for NVD3, which `rCharts` will assume is in libraries/nvd3/layouts/ directory, since the reference class for NVD3 is called Nvd3 [`setRefClass('Nvd3'...`](https://github.com/ramnathv/rCharts/blob/master/R/Nvd3.R#L7).
+
+---
+<h4>Roll Your Own Template</h4>
+
+For custom charts, we will need to write our own script (easy enough usually with a lot of copy/paste) and tell rCharts where to find it.  We could put it anywhere.  For this tutorial, I will be using the `R` package [slidify](http://slidify.org) which will prefer that my directory is in /libraries/widgets/.  To be original I will name my widget d3_horizon and my script template d3_horizon.html, so the full directory will be /libraries/widgets/d3_horizon/layouts/d3_horizon.html.  Here is how we would tell `rCharts` to find our custom template.
 
 
+```r
+rChart$setLib("libraries/widgets/d3_horizon")
+rChart$setTemplate(script = "libraries/widgets/d3_horizon/layouts/d3_horizon.html")
+```
+
+
+As I said, the script template usually will be a lot of copy/paste if you are trying to recreate something you have seen.  For the horizon plot, let's copy/paste from this example by [Mike Bostock](http://bl.ocks.org/mbostock/1483226).
+
+<h4>Draw a Mustache on Your Copy/Paste</h4>
+
+The basic process is find each of the variables or parameters we would like to define in `R`.  All of the parameters for our horizon plot are nicely provided in the [first couple lines of code](https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js#L3) in the horizon.js plugin.
+
+```
+    var bands = 1, // between 1 and 5, typically
+        mode = "offset", // or mirror
+        interpolate = "linear", // or basis, monotone, step-before, etc.
+        x = d3_horizonX,
+        y = d3_horizonY,
+        w = 960,
+        h = 40,
+        duration = 0;
+```
+
+In R, we can set these with `set` like this
+
+
+```r
+rChart$set(bands = 3, mode = "offset", interpolate = "linear", width = 960, 
+    height = 40)
+```
+
+and all of these will go into the `rCharts$params` list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache `{ params }`.
+
+Now let's find the relevant parts of the code from the example.
+
+```
+var chart = d3.horizon()
+    .width(width)
+    .height(height)
+    .bands(1)
+    .mode("mirror")
+    .interpolate("basis");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+    
+...
+
+// Render the chart.
+svg.data([data]).call(chart);
+```
+We will change them just slightly to the following (I escape the {} with a backslash so they show up).
+
+```
+var params = \{\{\{ chartParams \}\}\};
+
+var svg = d3.select('#' + params.id).append("svg")
+    .attr("width", params.width)
+    .attr("height", params.height);
+    
+var chart = d3.horizon()
+    .width(params.width)
+    .height(params.height)
+    .bands(params.band)
+    .mode(params.mode)
+    .interpolate(params.interpolate);
+    
+svg.data(params.data).call(chart)
+```
 
 <h4>Get Data and Transform</h4>
 
