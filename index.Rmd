@@ -293,6 +293,17 @@ data = [params.data.map(function(d) {return[d[params.x],d[params.y]]})];
 
 svg.data(data).call(chart);
 ```
+Just one last final item.  We need to supply a config.yml for `rCharts` to know where we have copied d3js and the horizon plugin.  It should look something like this.
+```
+d3_horizon:
+  css: [css/base.css]
+  jshead: [js/d3.v3.js,js/horizon.js]
+  cdn:
+    jshead: 
+      - "http://d3js.org/d3.v3.min.js"
+      - "http://timelyportfolio.github.io/rCharts_d3_horizon/libraries/widgets/js/d3_horizon/horizon.js"
+
+```
 
 Now for the magic moment.
 

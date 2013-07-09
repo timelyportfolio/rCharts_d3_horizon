@@ -123,7 +123,7 @@ str(rChart)
 
 <p>Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr &quot;charteb87c5f6093&quot;
+  ..$ dom   : chr &quot;charteb8344d579e&quot;
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr &quot;rcharts&quot;
@@ -341,12 +341,24 @@ rChart$set(data = SP500.df)
 svg.data(data).call(chart);
 </code></pre>
 
+<p>Just one last final item.  We need to supply a config.yml for <code>rCharts</code> to know where we have copied d3js and the horizon plugin.  It should look something like this.</p>
+
+<pre><code>d3_horizon:
+  css: [css/base.css]
+  jshead: [js/d3.v3.js,js/horizon.js]
+  cdn:
+    jshead: 
+      - &quot;http://d3js.org/d3.v3.min.js&quot;
+      - &quot;http://timelyportfolio.github.io/rCharts_d3_horizon/libraries/widgets/js/d3_horizon/horizon.js&quot;
+
+</code></pre>
+
 <p>Now for the magic moment.</p>
 
 <pre><code class="r">rChart
 </code></pre>
 
-<div id='charteb87c5f6093' class='rChart d3_horizon'></div>
+<div id='charteb8344d579e' class='rChart d3_horizon'></div>
 
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
@@ -355,10 +367,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "charteb87c5f6093",
+ "dom": "charteb8344d579e",
 "width":    960,
 "height":    300,
-"id": "charteb87c5f6093",
+"id": "charteb8344d579e",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
