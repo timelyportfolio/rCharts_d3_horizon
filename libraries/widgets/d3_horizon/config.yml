@@ -1,5 +1,4 @@
 d3_horizon:
-  css: [css/base.css]
   jshead: [js/d3.v3.js,js/horizon.js]
   cdn:
     jshead: 

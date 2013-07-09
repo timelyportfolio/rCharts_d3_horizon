@@ -296,7 +296,6 @@ svg.data(data).call(chart);
 Just one last final item.  We need to supply a config.yml for `rCharts` to know where we have copied d3js and the horizon plugin.  It should look something like this.
 ```
 d3_horizon:
-  css: [css/base.css]
   jshead: [js/d3.v3.js,js/horizon.js]
   cdn:
     jshead: 

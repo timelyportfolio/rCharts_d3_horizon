@@ -85,7 +85,7 @@ str(rChart)
 
 Reference class 'rCharts' [package "rCharts"] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr "charteb8344d579e"
+  ..$ dom   : chr "charteb8296a3312"
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr "rcharts"
@@ -327,7 +327,6 @@ svg.data(data).call(chart);
 Just one last final item.  We need to supply a config.yml for `rCharts` to know where we have copied d3js and the horizon plugin.  It should look something like this.
 ```
 d3_horizon:
-  css: [css/base.css]
   jshead: [js/d3.v3.js,js/horizon.js]
   cdn:
     jshead: 
@@ -344,7 +343,7 @@ rChart
 ```
 
 
-<div id='charteb8344d579e' class='rChart d3_horizon'></div>
+<div id='charteb8296a3312' class='rChart d3_horizon'></div>
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
 Mike Bostock http://bl.ocks.org/mbostock/1483226
@@ -352,10 +351,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "charteb8344d579e",
+ "dom": "charteb8296a3312",
 "width":    960,
 "height":    300,
-"id": "charteb8344d579e",
+"id": "charteb8296a3312",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
