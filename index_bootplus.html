@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="Timely Portfolio">
   
-  <link rel="icon" type="image/png" href="libraries/frameworks/bootplus/assets/ico/rcharts_favicon.ico">
+  <link rel="icon" type="image/png" href="img/slidify_logo_notext.png">
   
   <link href="libraries/frameworks/bootplus/assets/css/bootplus.css" rel="stylesheet">
   <link href="libraries/frameworks/bootplus/assets/css/bootplus-responsive.css" rel="stylesheet">
@@ -145,9 +145,9 @@ rChart &lt;- rCharts$new()
 str(rChart)
 </code></pre>
 
-<pre><code>Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
+<p>Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr &quot;chart249c44ec1879&quot;
+  ..$ dom   : chr &quot;chart249c4ba54a27&quot;
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr &quot;rcharts&quot;
@@ -165,7 +165,6 @@ str(rChart)
  and 24 methods, of which 12 are possibly relevant:
    addParams, getPayload, html, initialize, print, publish, render, save,
    set, setLib, setTemplate, show#envRefClass</p>
-</code></pre>
 
 <p>Only if it matters to you, a <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R"><code>rChart</code></a> is a <a href="https://github.com/hadley/devtools/wiki/R5">R5 object or reference class</a>.  If it doesn&#39;t matter to you, just forget what I just said.  As the <code>str</code> output tells us, this rChart has 8 fields and 24 methods (functions), of which 12 &quot;are possibly relevant&quot;.  I am guessing some like <code>width</code> and <code>height</code> do not need much explanation, but the others might not be immediately understood.  Since I learn by breaking, what happens if we call <code>rChart</code>?</p>
 
@@ -227,7 +226,7 @@ Whisker, on the other hand, takes a Mustache template and uses the variables of 
 <p>So all these multiple mustaches <code>{{{ }}}</code> get shaven and replaced with <code>R</code> variables or function output.  For instance, the mustached <code>{{ chartId }}</code> will get populated by the R variable <code>chartId</code>.  This gets assigned in the <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64"><code>render</code> method</a> <code>chartId = params$dom</code>.  If we look back at our <code>str</code> output above we see</p>
 
 <pre><code>$ params   :List of 3
-   ..$ dom   : chr &quot;chart249c44ec1879&quot;
+   ..$ dom   : chr &quot;chart249c23a11dcc&quot;
 </code></pre>
 
 <p>so once we fix our error (nope, still haven&#39;t even come close to fixing), we should see this is our html output.  Now let&#39;s see why our mustache is full of <a href="http://www.yaml.org/">YAML</a>.</p>
@@ -426,7 +425,7 @@ svg.data(data).call(chart);
 <pre><code class="r">rChart
 </code></pre>
 
-<div id='chart249c44ec1879' class='rChart d3_horizon'></div>
+<div id='chart249c4ba54a27' class='rChart d3_horizon'></div>
 
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
@@ -435,10 +434,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "chart249c44ec1879",
+ "dom": "chart249c4ba54a27",
 "width":    700,
 "height":    300,
-"id": "chart249c44ec1879",
+"id": "chart249c4ba54a27",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",

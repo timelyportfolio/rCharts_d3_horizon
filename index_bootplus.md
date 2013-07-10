@@ -64,7 +64,7 @@ str(rChart)
 
 Reference class 'rCharts' [package "rCharts"] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr "chart249c44ec1879"
+  ..$ dom   : chr "chart249c4ba54a27"
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr "rcharts"
@@ -358,7 +358,7 @@ rChart
 ```
 
 
-<div id='chart249c44ec1879' class='rChart d3_horizon'></div>
+<div id='chart249c4ba54a27' class='rChart d3_horizon'></div>
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
 Mike Bostock http://bl.ocks.org/mbostock/1483226
@@ -366,10 +366,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "chart249c44ec1879",
+ "dom": "chart249c4ba54a27",
 "width":    700,
 "height":    300,
-"id": "chart249c44ec1879",
+"id": "chart249c4ba54a27",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
