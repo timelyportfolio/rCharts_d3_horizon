@@ -14,11 +14,13 @@ assets:
     - "http://fonts.googleapis.com/css?family=Oxygen"
 ---
 
-# rCharts Custom Tutorial
+# Why Custom?
 
 <style>
 body{
   font-family: 'Oxygen', sans-serif;
+  font-size: 15px;
+  line-height: 22px;
 }
 
 h1,h2,h3,h4 {
@@ -29,15 +31,14 @@ h1,h2,h3,h4 {
 
 [`rCharts`](http://rcharts.io/site) provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around [d3.js](http://d3js.org).  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately `rCharts` is designed to also easily accommodate custom charts.
 
-There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots, summarized in [Horizon Plots with plot.xts](http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html) and explained in [More on Horizon Charts](http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html), the [horizon plot d3 plugin](https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js) from Jason Davies will be our target.
+There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots (summarized in [Horizon Plots with plot.xts](http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html) and explained in [More on Horizon Charts](http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html)), the [horizon plot d3 plugin](https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js) from Jason Davies will be a lovely target.
 
 This tutorial will go in depth to explain some of the inner workings of `rCharts` as we work through an implementation of d3 horizon plots.  We will see how `rCharts`
-- uses [mustache templates](http://mustache.github.io/) through the R package [`whisker`](https://github.com/edwindj/whisker) to bind html/js with `R`, and
-- employs [YAML](http://www.yaml.org/) through the R package [`yaml`](http://cran.r-project.org/web/packages/yaml/index.html) for configuration,
+- uses [mustache templates](http://mustache.github.io/) through the R package [`whisker`](https://github.com/edwindj/whisker) to bind html/js with `R,
+- employs [YAML](http://www.yaml.org/) through the R package [`yaml`](http://cran.r-project.org/web/packages/yaml/index.html) for configuration, and
 - passes data and parameters with [`RJSONIO`](http://cran.r-project.org/web/packages/RJSONIO/index.html).
 
 
----
 ### Disclaimer and Attribution
 
 **Much of this work is based on the [horizon plot plugin](https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js) by Jason Davies and the [example](http://bl.ocks.org/mbostock/1483226) by Mike Bostock.** 
@@ -54,7 +55,7 @@ opts_chunk$set(
 ```
 
 
----
+---.RAW
 ### rCharts Innards
 <h4>A Naked rChart</h4>
 What does a naked rChart look like?
@@ -81,7 +82,44 @@ Darn it didn't work, but we did get a clue `/layouts/chart.html`.  This falls in
 readLines(system.file('rChart.html', package = 'rCharts'))
 ```
 
-or you can also find the rChart.html [here in source](https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html).  I would show it, but all these `{` and `}` do not show up. The reason why they don't show up is also some of the magic behind rCharts.  These multiple `{` and `}` are mustaches and get filled through the `R` package [`whisker`](https://github.com/edwindj/whisker) as described in the `whisker` [Readme.md](https://github.com/edwindj/whisker/blob/master/readme.md).
+or you can also find the rChart.html [here in source](https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html).
+
+```
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    {{# assets.css }}
+    <link rel='stylesheet' href='{{{ . }}}'>
+    {{/ assets.css }}
+    
+    {{# assets.jshead }}
+    <script src='{{{ . }}}' type='text/javascript'></script>
+    {{/ assets.jshead }}
+    
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: {{params.width}}px;
+      height: {{params.height}}px;
+    }  
+    </style>
+    
+  </head>
+  <body>
+    {{# chartId }}
+    <{{container}} id='{{chartId}}' class='rChart {{ lib }}'></{{container}}>  
+    {{/ chartId }}
+    
+    {{{ script }}}
+    
+  </body>
+</html>
+```
+
+All the `{{{ }}}` provide some of the magic behind rCharts.  These multiple `{{{ }}}` are mustaches and get filled through the `R` package [`whisker`](https://github.com/edwindj/whisker) as described in the `whisker` [Readme.md](https://github.com/edwindj/whisker/blob/master/readme.md).
 
 <blockquote>Whisker is a {{Mustache}} implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
 
@@ -90,11 +128,11 @@ Mustache (and therefore whisker) takes a simple, but different, approach to temp
 Whisker, on the other hand, takes a Mustache template and uses the variables of the current environment (or the supplied list) to fill in the variables.
 </blockquote>
 
-So all these multiple mustaches `{` `}` will get filled with `R` variables or function output.  For instance, the three mustache `chartId` will get populated by the R variable `chartId`.  This gets assigned in the [`render` method](https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64) `chartId = params$dom`.  If we look back at our `str` output above we see
+So all these multiple mustaches `{{{ }}}` get shaven and replaced with `R` variables or function output.  For instance, the mustached `{{ chartId }}` will get populated by the R variable `chartId`.  This gets assigned in the [`render` method](https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64) `chartId = params$dom`.  If we look back at our `str` output above we see
 
 ```
 $ params   :List of 3
-   ..$ dom   : chr "charteb8717a58db"
+   ..$ dom   : chr "chart249c23a11dcc"
 ```
 so once we fix our error (nope, still haven't even come close to fixing), we should see this is our html output.  Now let's see why our mustache is full of [YAML](http://www.yaml.org/).
 
@@ -130,14 +168,14 @@ nvd3:
 
 You might wonder if we will ever fix our error and see a horizon plot.  Let's do both at the same time in the next section.
 
----
+---.RAW
 ### Convert the Horizon
 <h4>Finally, Fix Our Error and Start to See the Horizon</h4>
 The reason for our error
 ```
 ## Warning: cannot open file '/layouts/chart.html': No such file or directory
 ```
-is mustache tries to fill the `{script}` portion of rChart.html with a file specified by  which is
+is mustache tries to fill the `{{{ script }}}` portion of rChart.html with a file specified by  which is
 
 ```{r}
 rChart$templates$script
@@ -186,7 +224,7 @@ rChart$set(
   height = 300
 )
 ```
-and all of these will go into the `rCharts$params` list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache `{ params }`.
+and all of these will go into the `rCharts$params` list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache `{{{ params }}}`.
 
 Now let's find the relevant parts of the code from the example.
 
@@ -207,10 +245,10 @@ var svg = d3.select("body").append("svg")
 // Render the chart.
 svg.data([data]).call(chart);
 ```
-We will change them just slightly to the following (I escape the {} with a backslash so they show up).
+We will change them just slightly to the following.
 
 ```
-var params = {\{\{ chartParams }\}\};
+var params = {{{ chartParams }}};
 
 var svg = d3.select('#' + params.id).append("svg")
     .attr("width", params.width)
@@ -229,7 +267,7 @@ svg.data(params.data).call(chart)
 If you are following along at home, copy and paste that into your script template chart.html.  You can see mine [here](https://github.com/timelyportfolio/rCharts_d3_horizon/blob/gh-pages/libraries/widgets/d3_horizon/layouts/d3_horizon_no_data.html).
 
 <h4>Supply the Data</h4>
-Those paying real close attention will know `params$data` has not been defined.  Let's supply some data.
+Those paying real close attention will know `params$data` has not been defined.  Let's supply some data in the form of rolling 12-month returns on the S&P 500.
 
 ```{r warning = F}
 require(quantmod)
@@ -278,6 +316,9 @@ d3_horizon:
 
 ```
 
+
+---
+### Our Horizon Chart
 Now for the magic moment.
 
 ```{r}

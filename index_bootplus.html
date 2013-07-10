@@ -61,9 +61,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="http://aozora.github.io/bootplus/" style= "color:gray;">
+            <a class="brand" href="#">
               <!-- <img src='assets/img/slidify_logo.png' width='100px' /> -->
-              {powered by Bootplus}
+              
             </a>
             <iframe class="pull-right" style="margin-top:10px;" src="http://ghbtns.com/github-btn.html?user=timelyportfolio&repo=rCharts_d3_horizon&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe>
             <iframe class="pull-right" style="margin-top:10px;" src="http://ghbtns.com/github-btn.html?user=timelyportfolio&repo=rCharts_d3_horizon&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe>
@@ -87,10 +87,10 @@
   <div class="row">
     <div class="span3 bs-docs-sidebar">
       <ul class="nav nav-list bs-docs-sidenav">
-        <li><a href="#slide-1"> rCharts Custom Tutorial</a></li>
-        <li><a href="#slide-2"> Disclaimer and Attribution</a></li>
-        <li><a href="#slide-3"> rCharts Innards</a></li>
-        <li><a href="#slide-4"> Convert the Horizon</a></li>
+        <li><a href="#slide-1"> Why Custom?</a></li>
+        <li><a href="#slide-2"> rCharts Innards</a></li>
+        <li><a href="#slide-3"> Convert the Horizon</a></li>
+        <li><a href="#slide-4"> Our Horizon Chart</a></li>
         <li><a href="#slide-5"> Thanks</a></li>
       </ul>
     </div>
@@ -98,11 +98,13 @@
     <div class="span8">
       <section id="slide-1">
   <div class="page-header">
-    <h1>rCharts Custom Tutorial</h1>
+    <h1>Why Custom?</h1>
   </div>
   <style>
 body{
   font-family: 'Oxygen', sans-serif;
+  font-size: 15px;
+  line-height: 22px;
 }
 
 h1,h2,h3,h4 {
@@ -112,25 +114,22 @@ h1,h2,h3,h4 {
 
 <p><a href="http://rcharts.io/site"><code>rCharts</code></a> provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around <a href="http://d3js.org">d3.js</a>.  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately <code>rCharts</code> is designed to also easily accommodate custom charts.</p>
 
-<p>There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots, summarized in <a href="http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html">Horizon Plots with plot.xts</a> and explained in <a href="http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html">More on Horizon Charts</a>, the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot d3 plugin</a> from Jason Davies will be our target.</p>
+<p>There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots (summarized in <a href="http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html">Horizon Plots with plot.xts</a> and explained in <a href="http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html">More on Horizon Charts</a>), the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot d3 plugin</a> from Jason Davies will be a lovely target.</p>
 
 <p>This tutorial will go in depth to explain some of the inner workings of <code>rCharts</code> as we work through an implementation of d3 horizon plots.  We will see how <code>rCharts</code></p>
 
 <ul>
-<li>uses <a href="http://mustache.github.io/">mustache templates</a> through the R package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> to bind html/js with <code>R</code>, and</li>
-<li>employs <a href="http://www.yaml.org/">YAML</a> through the R package <a href="http://cran.r-project.org/web/packages/yaml/index.html"><code>yaml</code></a> for configuration,</li>
+<li>uses <a href="http://mustache.github.io/">mustache templates</a> through the R package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> to bind html/js with `R,</li>
+<li>employs <a href="http://www.yaml.org/">YAML</a> through the R package <a href="http://cran.r-project.org/web/packages/yaml/index.html"><code>yaml</code></a> for configuration, and</li>
 <li>passes data and parameters with <a href="http://cran.r-project.org/web/packages/RJSONIO/index.html"><code>RJSONIO</code></a>.</li>
 </ul>
 
-</section>
-<section id="slide-2">
-  <div class="page-header">
-    <h1>Disclaimer and Attribution</h1>
-  </div>
-  <p><strong>Much of this work is based on the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot plugin</a> by Jason Davies and the <a href="http://bl.ocks.org/mbostock/1483226">example</a> by Mike Bostock.</strong> </p>
+<h3>Disclaimer and Attribution</h3>
+
+<p><strong>Much of this work is based on the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot plugin</a> by Jason Davies and the <a href="http://bl.ocks.org/mbostock/1483226">example</a> by Mike Bostock.</strong> </p>
 
 </section>
-<section id="slide-3">
+<section id="slide-2">
   <div class="page-header">
     <h1>rCharts Innards</h1>
   </div>
@@ -148,7 +147,7 @@ str(rChart)
 
 <p>Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr &quot;chart20c07ea1c8a&quot;
+  ..$ dom   : chr &quot;chart249c44ec1879&quot;
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr &quot;rcharts&quot;
@@ -179,19 +178,55 @@ str(rChart)
 <pre><code class="r">readLines(system.file(&#39;rChart.html&#39;, package = &#39;rCharts&#39;))
 </code></pre>
 
-<p>or you can also find the rChart.html <a href="https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html">here in source</a>.  I would show it, but all these <code>{</code> and <code>}</code> do not show up. The reason why they don&#39;t show up is also some of the magic behind rCharts.  These multiple <code>{</code> and <code>}</code> are mustaches and get filled through the <code>R</code> package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> as described in the <code>whisker</code> <a href="https://github.com/edwindj/whisker/blob/master/readme.md">Readme.md</a>.</p>
+<p>or you can also find the rChart.html <a href="https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html">here in source</a>.</p>
 
-<blockquote>Whisker is a  implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
+<pre><code>&lt;!doctype HTML&gt;
+&lt;meta charset = &#39;utf-8&#39;&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    {{# assets.css }}
+    &lt;link rel=&#39;stylesheet&#39; href=&#39;{{{ . }}}&#39;&gt;
+    {{/ assets.css }}
+
+    {{# assets.jshead }}
+    &lt;script src=&#39;{{{ . }}}&#39; type=&#39;text/javascript&#39;&gt;&lt;/script&gt;
+    {{/ assets.jshead }}
+
+    &lt;style&gt;
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: {{params.width}}px;
+      height: {{params.height}}px;
+    }  
+    &lt;/style&gt;
+
+  &lt;/head&gt;
+  &lt;body&gt;
+    {{# chartId }}
+    &lt;{{container}} id=&#39;{{chartId}}&#39; class=&#39;rChart {{ lib }}&#39;&gt;&lt;/{{container}}&gt;  
+    {{/ chartId }}
+
+    {{{ script }}}
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>All the <code>{{{ }}}</code> provide some of the magic behind rCharts.  These multiple <code>{{{ }}}</code> are mustaches and get filled through the <code>R</code> package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> as described in the <code>whisker</code> <a href="https://github.com/edwindj/whisker/blob/master/readme.md">Readme.md</a>.</p>
+
+<blockquote>Whisker is a {{Mustache}} implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
 
 Mustache (and therefore whisker) takes a simple, but different, approach to templating compared to most templating engines. Most templating libraries, such as Sweave, knitr and brew, allow the user to mix programming code and text throughout the template. This is powerful, but ties your template directly to a programming language and makes it difficult to seperate programming code from templating code.
 
 Whisker, on the other hand, takes a Mustache template and uses the variables of the current environment (or the supplied list) to fill in the variables.
 </blockquote>
 
-<p>So all these multiple mustaches <code>{</code> <code>}</code> will get filled with <code>R</code> variables or function output.  For instance, the three mustache <code>chartId</code> will get populated by the R variable <code>chartId</code>.  This gets assigned in the <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64"><code>render</code> method</a> <code>chartId = params$dom</code>.  If we look back at our <code>str</code> output above we see</p>
+<p>So all these multiple mustaches <code>{{{ }}}</code> get shaven and replaced with <code>R</code> variables or function output.  For instance, the mustached <code>{{ chartId }}</code> will get populated by the R variable <code>chartId</code>.  This gets assigned in the <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64"><code>render</code> method</a> <code>chartId = params$dom</code>.  If we look back at our <code>str</code> output above we see</p>
 
 <pre><code>$ params   :List of 3
-   ..$ dom   : chr &quot;charteb8717a58db&quot;
+   ..$ dom   : chr &quot;chart249c23a11dcc&quot;
 </code></pre>
 
 <p>so once we fix our error (nope, still haven&#39;t even come close to fixing), we should see this is our html output.  Now let&#39;s see why our mustache is full of <a href="http://www.yaml.org/">YAML</a>.</p>
@@ -228,7 +263,7 @@ Whisker, on the other hand, takes a Mustache template and uses the variables of 
 <p>You might wonder if we will ever fix our error and see a horizon plot.  Let&#39;s do both at the same time in the next section.</p>
 
 </section>
-<section id="slide-4">
+<section id="slide-3">
   <div class="page-header">
     <h1>Convert the Horizon</h1>
   </div>
@@ -239,7 +274,7 @@ Whisker, on the other hand, takes a Mustache template and uses the variables of 
 <pre><code>## Warning: cannot open file &#39;/layouts/chart.html&#39;: No such file or directory
 </code></pre>
 
-<p>is mustache tries to fill the <code>{script}</code> portion of rChart.html with a file specified by  which is</p>
+<p>is mustache tries to fill the <code>{{{ script }}}</code> portion of rChart.html with a file specified by  which is</p>
 
 <pre><code class="r">rChart$templates$script
 </code></pre>
@@ -289,7 +324,7 @@ rChart$setTemplate(script = &quot;libraries/widgets/d3_horizon/layouts/d3_horizo
 )
 </code></pre>
 
-<p>and all of these will go into the <code>rCharts$params</code> list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache <code>{ params }</code>.</p>
+<p>and all of these will go into the <code>rCharts$params</code> list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache <code>{{{ params }}}</code>.</p>
 
 <p>Now let&#39;s find the relevant parts of the code from the example.</p>
 
@@ -310,9 +345,9 @@ var svg = d3.select(&quot;body&quot;).append(&quot;svg&quot;)
 svg.data([data]).call(chart);
 </code></pre>
 
-<p>We will change them just slightly to the following (I escape the {} with a backslash so they show up).</p>
+<p>We will change them just slightly to the following.</p>
 
-<pre><code>var params = {\{\{ chartParams }\}\};
+<pre><code>var params = {{{ chartParams }}};
 
 var svg = d3.select(&#39;#&#39; + params.id).append(&quot;svg&quot;)
     .attr(&quot;width&quot;, params.width)
@@ -332,7 +367,7 @@ svg.data(params.data).call(chart)
 
 <h4>Supply the Data</h4>
 
-<p>Those paying real close attention will know <code>params$data</code> has not been defined.  Let&#39;s supply some data.</p>
+<p>Those paying real close attention will know <code>params$data</code> has not been defined.  Let&#39;s supply some data in the form of rolling 12-month returns on the S&amp;P 500.</p>
 
 <pre><code class="r">require(quantmod)
 #get sp500 prices and convert them to monthly
@@ -380,12 +415,17 @@ svg.data(data).call(chart);
 
 </code></pre>
 
-<p>Now for the magic moment.</p>
+</section>
+<section id="slide-4">
+  <div class="page-header">
+    <h1>Our Horizon Chart</h1>
+  </div>
+  <p>Now for the magic moment.</p>
 
 <pre><code class="r">rChart
 </code></pre>
 
-<div id='chart20c07ea1c8a' class='rChart d3_horizon'></div>
+<div id='chart249c44ec1879' class='rChart d3_horizon'></div>
 
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
@@ -394,10 +434,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "chart20c07ea1c8a",
+ "dom": "chart249c44ec1879",
 "width":    700,
 "height":    300,
-"id": "chart20c07ea1c8a",
+"id": "chart249c44ec1879",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
@@ -1483,7 +1523,7 @@ var params = {
 },
 {
  "date": 1.3726e+09,
-"SP500": 0.18933 
+"SP500": 0.19792 
 } ],
 "x": "date",
 "y": "SP500" 
