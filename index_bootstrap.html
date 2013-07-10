@@ -1,139 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>rCharts Extra - d3 Horizon Conversion</title>
-  <!-- Always force latest IE rendering engine -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="author" content="Timely Portfolio">
-  
-  <link rel="icon" type="image/png" href="libraries/frameworks/bootplus/assets/ico/rcharts_favicon.ico">
-  
-  <link href="libraries/frameworks/bootplus/assets/css/bootplus.css" rel="stylesheet">
-  <link href="libraries/frameworks/bootplus/assets/css/bootplus-responsive.css" rel="stylesheet">
-  <link href="libraries/frameworks/bootplus/assets/css/font-awesome.min.css" rel="stylesheet">
-  <link href="libraries/frameworks/bootplus/assets/css/docs.css" rel="stylesheet">
-  <link href="libraries/highlighters/prettify/css/twitter-bootstrap.css" rel="stylesheet">
-  
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
-  
-  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-  <script src="../assets/js/html5shiv.js"></script>
-  <![endif]-->
-  
-  
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" type="image/png" href="favicon.ico">
   <style>
-    p {
-      text-align: justify;
-    }
-    .nav [class^="icon-"] {
-      line-height: normal;
-    }
-    
-    ol.linenums {
-      
-    }
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
   </style>
   
-  <!-- Fav and touch icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="libraries/frameworks/bootplus/assets/ico/apple-touch-icon-144-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="libraries/frameworks/bootplus/assets/ico/apple-touch-icon-114-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="libraries/frameworks/bootplus/assets/ico/apple-touch-icon-72-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" href="libraries/frameworks/bootplus/assets/ico/apple-touch-icon-57-precomposed.png">
-  <link rel="shortcut icon" href="libraries/frameworks/bootplus/assets/ico/favicon.png">  <link rel=stylesheet href="http://fonts.googleapis.com/css?family=Raleway:300"></link>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.no-responsive.no-icons.min.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<link  rel="stylesheet" 
+    href="http://netdna.bootstrapcdn.com/font-awesome/2.0/css/font-awesome.css">
+  <link rel="stylesheet" href="libraries/frameworks/bootstrap/css/bootstrap-responsive.min.css">
+  
+  <link rel="stylesheet" href="libraries/frameworks/bootstrap/css/main.css">
+  <link rel="stylesheet" href="libraries/highlighters/prettify/css/twitter-bootstrap.css" />
+  <script src="libraries/frameworks/bootstrap/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/frameworks/bootstrap/js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+    <link rel=stylesheet href="http://fonts.googleapis.com/css?family=Raleway:300"></link>
 <link rel=stylesheet href="http://fonts.googleapis.com/css?family=Oxygen"></link>
 
-  <script src="libraries/frameworks/bootplus/assets/js/jquery.js"></script>
   <script src="libraries/widgets/d3_horizon/js/d3.v3.js"></script>
 <script src="libraries/widgets/d3_horizon/js/horizon.js"></script>
 
 </head>
-<body data-spy="scroll" data-target=".bs-docs-sidebar">
-  
-  <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="#">
-              <!-- <img src='assets/img/slidify_logo.png' width='100px' /> -->
-              
-            </a>
-            <iframe class="pull-right" style="margin-top:10px;" src="http://ghbtns.com/github-btn.html?user=timelyportfolio&repo=rCharts_d3_horizon&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe>
-            <iframe class="pull-right" style="margin-top:10px;" src="http://ghbtns.com/github-btn.html?user=timelyportfolio&repo=rCharts_d3_horizon&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe>
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div>
-    </div>
-</div>
-  <header class="jumbotron subhead" id="overview">
+<body>
+   <!--[if lt IE 7]>
+     <p class="chromeframe">You are using an outdated browser. 
+       <a href="http://browsehappy.com/">Upgrade your browser today</a> or 
+       <a href="http://www.google.com/chromeframe/?redirect=true"> 
+         install Google Chrome Frame
+       </a> to better experience this site.
+    </p>
+   <![endif]-->
+   <!-- Ref: http://twitter.github.com/bootstrap/examples/hero.html -->
+   
     <div class="container">
-      <h1>rCharts Extra - d3 Horizon Conversion</h1>
-      <p class="lead">
-        
-      </p>
-    </div>
-  </header>
-  
-  <div class="container">
-  <div class="row">
-    <div class="span3 bs-docs-sidebar">
-      <ul class="nav nav-list bs-docs-sidenav">
-        <li><a href="#slide-1"> Why Custom?</a></li>
-        <li><a href="#slide-2"> rCharts Innards</a></li>
-        <li><a href="#slide-3"> Convert the Horizon</a></li>
-        <li><a href="#slide-4"> Our Horizon Chart</a></li>
-        <li><a href="#slide-5"> Thanks</a></li>
-      </ul>
-    </div>
-    
-    <div class="span8">
-      <section id="slide-1">
-  <div class="page-header">
-    <h1>Why Custom?</h1>
-  </div>
-  <style>
+      
+<style>
 body{
   font-family: 'Oxygen', sans-serif;
-  font-size: 15px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 h1,h2,h3,h4 {
   font-family: 'Raleway', sans-serif;
 }
+
+.container { width: 1000px; }
+
+h3 {
+  background-color: #D4DAEC;
+  text-indent: 100px; 
+}
+
+h4 {
+  text-indent: 100px;
+}
+
+g-table-intro h4 {
+  text-indent: 0px;
+}
 </style>
 
-<p><a href="http://rcharts.io/site"><code>rCharts</code></a> provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around <a href="http://d3js.org">d3.js</a>.  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately <code>rCharts</code> is designed to also easily accommodate custom charts.</p>
+<p><a href="https://github.com/timelyportfolio/rCharts_d3_horizon"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a></p>
 
-<p>There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots (summarized in <a href="http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html">Horizon Plots with plot.xts</a> and explained in <a href="http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html">More on Horizon Charts</a>), the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot d3 plugin</a> from Jason Davies will be a lovely target.</p>
+<h1>rCharts Conversion of d3 Horizon Plot Plugin</h1>
 
-<p>This tutorial will go in depth to explain some of the inner workings of <code>rCharts</code> as we work through an implementation of d3 horizon plots.  We will see how <code>rCharts</code></p>
 
-<ul>
-<li>uses <a href="http://mustache.github.io/">mustache templates</a> through the R package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> to bind html/js with `R,</li>
-<li>employs <a href="http://www.yaml.org/">YAML</a> through the R package <a href="http://cran.r-project.org/web/packages/yaml/index.html"><code>yaml</code></a> for configuration, and</li>
-<li>passes data and parameters with <a href="http://cran.r-project.org/web/packages/RJSONIO/index.html"><code>RJSONIO</code></a>.</li>
-</ul>
+<p><br/></p>
 
 <h3>Disclaimer and Attribution</h3>
 
 <p><strong>Much of this work is based on the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot plugin</a> by Jason Davies and the <a href="http://bl.ocks.org/mbostock/1483226">example</a> by Mike Bostock.</strong> </p>
 
-</section>
-<section id="slide-2">
-  <div class="page-header">
-    <h1>rCharts Innards</h1>
-  </div>
-  <h4>A Naked rChart</h4>
+
+<p><br/></p>
+
+<h3>rCharts Extra</h3>
+
+<p><a href="http://rcharts.io/site"><code>rCharts</code></a> provides almost every chart type imaginable through multiple js libraries.  The speed at which it has added libraries shows that the authors are well aware of the quick pace of innovation in the visualization community especially around <a href="http://d3js.org">d3.js</a>.  It is foolish to think though that every chart in every combination with every interaction will be available, so fortunately <code>rCharts</code> is designed to also easily accommodate custom charts.</p>
+
+<p>There are already some very impressive conversions of complicated NY Times Interactive pieces, but I thought it would be helpful to show how we might convert a more basic chart type with less moving parts.  Since I love horizon plots, summarized in <a href="http://timelyportfolio.blogspot.com/2012/08/horizon-plots-with-plotxts.html">Horizon Plots with plot.xts</a> and explained in <a href="http://timelyportfolio.blogspot.com/2012/08/more-on-horizon-charts.html">More on Horizon Charts</a>, the <a href="https://github.com/d3/d3-plugins/blob/master/horizon/horizon.js">horizon plot d3 plugin</a> from Jason Davies will be our target.</p>
+
+<p>This tutorial will go in depth to explain some of the inner workings of <code>rCharts</code> as we work through an implementation of d3 horizon plots.  We will see how <code>rCharts</code></p>
+
+<ul>
+<li>uses <a href="http://mustache.github.io/">mustache templates</a> through the R package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> to bind html/js with <code>R</code>, and</li>
+<li>employs <a href="http://www.yaml.org/">YAML</a> through the R package <a href="http://cran.r-project.org/web/packages/yaml/index.html"><code>yaml</code></a> for configuration,</li>
+<li>passes data and parameters with <a href="http://cran.r-project.org/web/packages/RJSONIO/index.html"><code>RJSONIO</code></a>.</li>
+</ul>
+
+
+<p><br/></p>
+
+<h3>rCharts Innards</h3>
+
+<h4>A Naked rChart</h4>
 
 <p>What does a naked rChart look like?</p>
 
@@ -147,7 +122,7 @@ str(rChart)
 
 <p>Reference class &#39;rCharts&#39; [package &quot;rCharts&quot;] with 8 fields
  $ params   :List of 3
-  ..$ dom   : chr &quot;chart249c44ec1879&quot;
+  ..$ dom   : chr &quot;charteb85ab24ab8&quot;
   ..$ width : num 800
   ..$ height: num 400
  $ lib      : chr &quot;rcharts&quot;
@@ -172,67 +147,29 @@ str(rChart)
 </code></pre>
 
 <h4>Templates with Mustaches</h4>
-
 <p>Darn it didn&#39;t work, but we did get a clue <code>/layouts/chart.html</code>.  This falls into the <code>templates</code> field in the <code>str</code> output above and looks like a file and directory.  I guess it would be wise to inspect this <code>templates</code> field.  In it, we find <code>page</code>, <code>chartDiv</code>, and <code>script</code>.  <code>page</code> and <code>script</code> look like html files, so let&#39;s find out where these are and what&#39;s inside.  <code>page</code> is defined as rChart.html, which is inside your <code>R</code> rCharts package.  You can see for yourself by typing the following in <code>R</code>:</p>
 
 <pre><code class="r">readLines(system.file(&#39;rChart.html&#39;, package = &#39;rCharts&#39;))
 </code></pre>
 
-<p>or you can also find the rChart.html <a href="https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html">here in source</a>.</p>
+<p>or you can also find the rChart.html <a href="https://github.com/ramnathv/rCharts/blob/master/inst/rChart.html">here in source</a>.  I would show it, but all these <code>{</code> and <code>}</code> do not show up. The reason why they don&#39;t show up is also some of the magic behind rCharts.  These multiple <code>{</code> and <code>}</code> are mustaches and get filled through the <code>R</code> package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> as described in the <code>whisker</code> <a href="https://github.com/edwindj/whisker/blob/master/readme.md">Readme.md</a>.</p>
 
-<pre><code>&lt;!doctype HTML&gt;
-&lt;meta charset = &#39;utf-8&#39;&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    {{# assets.css }}
-    &lt;link rel=&#39;stylesheet&#39; href=&#39;{{{ . }}}&#39;&gt;
-    {{/ assets.css }}
-
-    {{# assets.jshead }}
-    &lt;script src=&#39;{{{ . }}}&#39; type=&#39;text/javascript&#39;&gt;&lt;/script&gt;
-    {{/ assets.jshead }}
-
-    &lt;style&gt;
-    .rChart {
-      display: block;
-      margin-left: auto; 
-      margin-right: auto;
-      width: {{params.width}}px;
-      height: {{params.height}}px;
-    }  
-    &lt;/style&gt;
-
-  &lt;/head&gt;
-  &lt;body&gt;
-    {{# chartId }}
-    &lt;{{container}} id=&#39;{{chartId}}&#39; class=&#39;rChart {{ lib }}&#39;&gt;&lt;/{{container}}&gt;  
-    {{/ chartId }}
-
-    {{{ script }}}
-
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>All the <code>{{{ }}}</code> provide some of the magic behind rCharts.  These multiple <code>{{{ }}}</code> are mustaches and get filled through the <code>R</code> package <a href="https://github.com/edwindj/whisker"><code>whisker</code></a> as described in the <code>whisker</code> <a href="https://github.com/edwindj/whisker/blob/master/readme.md">Readme.md</a>.</p>
-
-<blockquote>Whisker is a {{Mustache}} implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
+<blockquote>Whisker is a  implementation in R confirming to the Mustache specification. Mustache is a logicless templating language, meaning that no programming source code can be used in your templates. This may seem very limited, but Mustache is nonetheless powerful and has the advantage of being able to be used unaltered in many programming languages. It makes it very easy to write a web application in R using Mustache templates which could also be re-used for client-side rendering with "Mustache.js".
 
 Mustache (and therefore whisker) takes a simple, but different, approach to templating compared to most templating engines. Most templating libraries, such as Sweave, knitr and brew, allow the user to mix programming code and text throughout the template. This is powerful, but ties your template directly to a programming language and makes it difficult to seperate programming code from templating code.
 
 Whisker, on the other hand, takes a Mustache template and uses the variables of the current environment (or the supplied list) to fill in the variables.
 </blockquote>
 
-<p>So all these multiple mustaches <code>{{{ }}}</code> get shaven and replaced with <code>R</code> variables or function output.  For instance, the mustached <code>{{ chartId }}</code> will get populated by the R variable <code>chartId</code>.  This gets assigned in the <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64"><code>render</code> method</a> <code>chartId = params$dom</code>.  If we look back at our <code>str</code> output above we see</p>
+<p>So all these multiple mustaches <code>{</code> <code>}</code> will get filled with <code>R</code> variables or function output.  For instance, the three mustache <code>chartId</code> will get populated by the R variable <code>chartId</code>.  This gets assigned in the <a href="https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L64"><code>render</code> method</a> <code>chartId = params$dom</code>.  If we look back at our <code>str</code> output above we see</p>
 
 <pre><code>$ params   :List of 3
-   ..$ dom   : chr &quot;chart249c23a11dcc&quot;
+   ..$ dom   : chr &quot;charteb8717a58db&quot;
 </code></pre>
 
 <p>so once we fix our error (nope, still haven&#39;t even come close to fixing), we should see this is our html output.  Now let&#39;s see why our mustache is full of <a href="http://www.yaml.org/">YAML</a>.</p>
 
 <h4>Mustache Full of YAML</h4>
-
 <p>If we are working with html/js, we have to expect some js and css file dependencies that we will need to load.  <code>rCharts</code> looks for a <a href="http://www.yaml.org/">YAML</a> file config.yml to tell us the location for all these js and css files.  This <a href="%5BYAML%5D(https://github.com/ramnathv/rCharts/blob/master/R/rChartsClass.R#L63">line</a></p>
 
 <pre><code> assets = get_assets(LIB, static = T, cdn = cdn)
@@ -262,19 +199,19 @@ Whisker, on the other hand, takes a Mustache template and uses the variables of 
 
 <p>You might wonder if we will ever fix our error and see a horizon plot.  Let&#39;s do both at the same time in the next section.</p>
 
-</section>
-<section id="slide-3">
-  <div class="page-header">
-    <h1>Convert the Horizon</h1>
-  </div>
-  <h4>Finally, Fix Our Error and Start to See the Horizon</h4>
+
+<p><br/></p>
+
+<h3>Convert the Horizon</h3>
+
+<h4>Finally, Fix Our Error and Start to See the Horizon</h4>
 
 <p>The reason for our error</p>
 
 <pre><code>## Warning: cannot open file &#39;/layouts/chart.html&#39;: No such file or directory
 </code></pre>
 
-<p>is mustache tries to fill the <code>{{{ script }}}</code> portion of rChart.html with a file specified by  which is</p>
+<p>is mustache tries to fill the <code>{script}</code> portion of rChart.html with a file specified by  which is</p>
 
 <pre><code class="r">rChart$templates$script
 </code></pre>
@@ -290,7 +227,6 @@ LIB &lt;&lt;- get_lib(lib) # library name and url to library folder
 <p>Here is the <a href="https://github.com/ramnathv/rCharts/blob/master/inst/libraries/nvd3/layouts/chart.html">chart.html script template</a> for NVD3, which <code>rCharts</code> will assume is in libraries/nvd3/layouts/ directory, since the reference class for NVD3 is called Nvd3 <a href="https://github.com/ramnathv/rCharts/blob/master/R/Nvd3.R#L7"><code>setRefClass(&#39;Nvd3&#39;...</code></a>.</p>
 
 <h4>Roll Your Own Template</h4>
-
 <p>For custom charts, we will need to write our own script (easy enough usually with a lot of copy/paste) and tell rCharts where to find it.  We could put it anywhere.  For this tutorial, I will be using the <code>R</code> package <a href="http://slidify.org">slidify</a> which will prefer that my directory is in /libraries/widgets/.  To be original I will name my widget d3_horizon and my script template d3_horizon.html, so the full directory will be /libraries/widgets/d3_horizon/layouts/d3_horizon.html.  Here is how we would tell <code>rCharts</code> to find our custom template.</p>
 
 <pre><code class="r">rChart$setLib(&#39;libraries/widgets/d3_horizon&#39;)
@@ -319,12 +255,12 @@ rChart$setTemplate(script = &quot;libraries/widgets/d3_horizon/layouts/d3_horizo
   bands = 3,
   mode = &quot;mirror&quot;,
   interpolate = &quot;basis&quot;,
-  width = 700,
+  width = 960,
   height = 300
 )
 </code></pre>
 
-<p>and all of these will go into the <code>rCharts$params</code> list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache <code>{{{ params }}}</code>.</p>
+<p>and all of these will go into the <code>rCharts$params</code> list.  Remember our powerful and sexy mustache.  We can get these parameters with it.  Just triple mustache <code>{ params }</code>.</p>
 
 <p>Now let&#39;s find the relevant parts of the code from the example.</p>
 
@@ -345,9 +281,9 @@ var svg = d3.select(&quot;body&quot;).append(&quot;svg&quot;)
 svg.data([data]).call(chart);
 </code></pre>
 
-<p>We will change them just slightly to the following.</p>
+<p>We will change them just slightly to the following (I escape the {} with a backslash so they show up).</p>
 
-<pre><code>var params = {{{ chartParams }}};
+<pre><code>var params = {\{\{ chartParams }\}\};
 
 var svg = d3.select(&#39;#&#39; + params.id).append(&quot;svg&quot;)
     .attr(&quot;width&quot;, params.width)
@@ -367,7 +303,7 @@ svg.data(params.data).call(chart)
 
 <h4>Supply the Data</h4>
 
-<p>Those paying real close attention will know <code>params$data</code> has not been defined.  Let&#39;s supply some data in the form of rolling 12-month returns on the S&amp;P 500.</p>
+<p>Those paying real close attention will know <code>params$data</code> has not been defined.  Let&#39;s supply some data.</p>
 
 <pre><code class="r">require(quantmod)
 #get sp500 prices and convert them to monthly
@@ -415,17 +351,12 @@ svg.data(data).call(chart);
 
 </code></pre>
 
-</section>
-<section id="slide-4">
-  <div class="page-header">
-    <h1>Our Horizon Chart</h1>
-  </div>
-  <p>Now for the magic moment.</p>
+<p>Now for the magic moment.</p>
 
 <pre><code class="r">rChart
 </code></pre>
 
-<div id='chart249c44ec1879' class='rChart d3_horizon'></div>
+<div id='charteb85ab24ab8' class='rChart d3_horizon'></div>
 
 <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
@@ -434,10 +365,10 @@ Mike Bostock http://bl.ocks.org/mbostock/1483226
 
 <script>
 var params = {
- "dom": "chart249c44ec1879",
-"width":    700,
+ "dom": "charteb85ab24ab8",
+"width":    960,
 "height":    300,
-"id": "chart249c44ec1879",
+"id": "charteb85ab24ab8",
 "bands":      3,
 "mode": "mirror",
 "interpolate": "basis",
@@ -1523,7 +1454,7 @@ var params = {
 },
 {
  "date": 1.3726e+09,
-"SP500": 0.19792 
+"SP500": 0.18933 
 } ],
 "x": "date",
 "y": "SP500" 
@@ -1545,12 +1476,9 @@ data = [params.data.map(function(d) {return[d[params.x],d[params.y]]})]
 svg.data(data).call(chart)
 </script>
 
-</section>
-<section id="slide-5">
-  <div class="page-header">
-    <h1>Thanks</h1>
-  </div>
-  <p>As I hope you can tell, this post was more a function of the efforts of others than of my own.</p>
+<h3>Thanks</h3>
+
+<p>As I hope you can tell, this post was more a function of the efforts of others than of my own.</p>
 
 <p>Thanks specifically:</p>
 
@@ -1561,15 +1489,13 @@ svg.data(data).call(chart)
 <li>Google fonts <a href="http://www.google.com/fonts/specimen/Raleway">Raleway</a> and <a href="http://www.google.com/fonts/specimen/Oxygen">Oxygen</a></li>
 </ul>
 
-</section>
     </div>
-  </div>
-  </div> <!-- container -->
-  
-  
+        
 </body>
-  <script src="libraries/frameworks/bootplus/assets/js/bootstrap.min.js"></script>
-  <script src="libraries/frameworks/bootplus/assets/js/application.js"></script>
+  <script src="libraries/frameworks/bootstrap/js/vendor/bootstrap.min.js"></script>
+  <script src="libraries/frameworks/bootstrap/js/plugins.js"></script>
+  <script src="libraries/frameworks/bootstrap/js/main.js"></script>
+  <!-- Load Javascripts for Widgets -->
   
   <!-- Google Prettify -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
