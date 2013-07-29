@@ -2,51 +2,95 @@
 <meta charset = 'utf-8'>
 <html>
   <head>
+    <link rel='stylesheet' href="http://netdna.bootstrapcdn.com/bootswatch/2.3.1/cosmo/bootstrap.min.css">
+     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" >
+    <link rel='stylesheet' href="http://twitter.github.io/bootstrap/2.3.2/assets/js/google-code-prettify/prettify.css">
+    <link rel='stylesheet' href="http://aozora.github.io/bootplus/assets/css/docs.css">
     
-    <script src='C:\Users\Kent.TLEAVELL_NT\Dropbox\development\r\rCharts_d3_horizon\libraries\widgets
-
-\d3_horizon/js/d3.v3.js' type='text/javascript'></script>
-    <script src='C:\Users\Kent.TLEAVELL_NT\Dropbox\development\r\rCharts_d3_horizon\libraries\widgets
-
-\d3_horizon/js/horizon.js' type='text/javascript'></script>
+    <script src='http://d3js.org/d3.v3.min.js' type='text/javascript'></script>
+    <script src='http://timelyportfolio.github.io/rCharts_d3_horizon/libraries/widgets/d3_horizon/js/horizon.js' type='text/javascript'></script>
     
     <style>
     .rChart {
-      display: block;
-      margin-left: auto; 
-      margin-right: auto;
-      width: 700px;
-      height: 300px;
-    }  
+      display: block
+      margin: auto auto;
+      width: 100%;
+      height: 400px;
+    }
+    /*
+    body {
+      margin-top: 60px;
+    }
+    */
     </style>
     
   </head>
   <body>
-    <div id='chart25543f017df7' class='rChart d3_horizon'></div>  
-    
+    <div class='container'>
+      <div class='row'>
+        <div class='span8'>
+          <div class="bs-docs-example">
+            <div id='chart2554745f474' class='rChart nvd3Plot d3_horizon'></div>
+          <br/>
+<pre><code class='r'>require(rCharts)
+
+rChart &lt;- rCharts$new()
+rChart$setLib('http://timelyportfolio.github.io/rCharts_d3_horizon/libraries/widgets/d3_horizon')
+rChart$setTemplate(script = 'libraries/widgets/d3_horizon/layouts/d3_horizon_smallmultiple.html')
+
+rChart$set(
+  bands = 3,
+  mode = &quot;mirror&quot;,
+  interpolate = &quot;basis&quot;,
+  width = 700,
+  height = 300
+)
+
+require(quantmod)
+#get sp500 prices and convert them to monthly
+SP500 &lt;- to.monthly(
+  getSymbols(&quot;^GSPC&quot;, from = &quot;1990-01-01&quot;, auto.assign = FALSE)
+)[,4]
+Nasdaq &lt;- to.monthly(
+  getSymbols(&quot;^IXIC&quot;, from = &quot;1990-01-01&quot;, auto.assign = FALSE)
+)[,4]
+Dax &lt;- to.monthly(
+  getSymbols(&quot;^GDAXI&quot;, from = &quot;1990-01-01&quot;, auto.assign = FALSE)
+)[,4]
+
+#get 12 month rolling return
+prices &lt;- merge(SP500,Nasdaq,Dax)
+returns &lt;- na.omit(ROC(prices, type = &quot;discrete&quot;, n = 12))
+returns.df &lt;- cbind(
+  as.numeric(as.POSIXct(as.Date(index(returns)))),
+  coredata(returns)
+)
+
+colnames(returns.df) &lt;- c(&quot;date&quot;,&quot;SP500&quot;,&quot;Nasdaq&quot;,&quot;DAX&quot;)
+
+#supply the data to our dataless but no longer naked rChart
+
+rChart$set(data = returns.df)
+rChart$set(x = &quot;date&quot;)
+rChart
+</code></pre>
+</div>
+        </div>
+      </div>
+    </div>
+      
     <!--Attribution:
 Jason Davies https://github.com/d3/d3-plugins/tree/master/horizon
 Mike Bostock http://bl.ocks.org/mbostock/1483226
 -->
 
-    <style>
-    .axis .tick line {
-        stroke: lightgrey;
-        stroke-opacity: 0.7;
-    }
-    .y path, .x path {
-        stroke-width: 0;
-        fill-opacity: 0;
-    }
-    </style>
-    
 <script>
 var params = {
- "dom": "chart25543f017df7",
+ "dom": "chart2554745f474",
 "width":    700,
 "height":    300,
 "bands":      3,
-"mode": "offset",
+"mode": "mirror",
 "interpolate": "basis",
 "data": [ {
  "date": 6.8895e+08,
@@ -1615,41 +1659,51 @@ var params = {
 "DAX": 0.21745 
 } ],
 "x": "date",
-"y": "SP500",
-"id": "chart25543f017df7" 
+"id": "chart2554745f474" 
 };
-        
-        var svg = d3.select('#' + params.id).append("svg")
-            .attr("width", params.width)
-            .attr("height", params.height);
+
+var svg = d3.select('#' + params.id).append("svg")
+    .attr("width", params.width)
+    .attr("height", params.height);
             
-        //get number of keys assuming everything besides date is to be plotted
-        var nKeys = d3.keys(params.data[0]).length - 1;
+//get number of keys assuming everything besides date is to be plotted
+var nKeys = d3.keys(params.data[0]).length - 1;
 
-        var chart = d3.horizon()
-            .width(params.width)
-            .height(params.height / nKeys)
-            .bands(params.bands)
-            .mode(params.mode)
-            .interpolate(params.interpolate);
+var chart = d3.horizon()
+    .width(params.width)
+    .height(params.height / nKeys)
+    .bands(params.bands)
+    .mode(params.mode)
+    .interpolate(params.interpolate);
         
     
-        d3.keys(params.data[0]).forEach(function(key,i) {
-            if (!(key == params.x)) {
-                var data = [params.data.map(function(d) {return[d[params.x],d[key]]})]
-                var gHorizon = svg.append("g")
-                    .data(data)
-                    .attr("transform","translate(0," + ( (i-1) * params.height / nKeys) + ")" )
-                    .call(chart);
-                gHorizon.append("text")
-                    .attr("x", 0)
-                    .attr("y", params.height / nKeys / 2)
-                    .attr("dy", ".35em")
-                    .text(key);
-
-            };
-        });                
-    </script>
+d3.keys(params.data[0]).forEach(function(key,i) {
+  if (!(key == params.x)) {
+    var data = [params.data.map(function(d) {return[d[params.x],d[key]]})]
+    var gHorizon = svg.append("g")
+        .data(data)
+        .attr("transform","translate(0," + ( (i-1) * params.height / nKeys) + ")" )
+        .call(chart);
+    gHorizon.append("text")
+        .attr("x", 0)
+        .attr("y", params.height / nKeys / 2)
+        .attr("dy", ".35em")
+        .text(key);
+  };
+});                
+</script>
     
-</body>
+  </body>
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script 
+    src='https://google-code-prettify.googlecode.com/svn-history/r232/trunk/src/lang-r.js'>
+  </script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
 </html>
