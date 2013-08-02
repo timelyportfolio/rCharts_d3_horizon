@@ -1,8 +1,8 @@
 require(rCharts)
 
 rChart <- rCharts$new()
-rChart$setLib('libraries/widgets/d3_horizon')
-rChart$setTemplate(script = "libraries/widgets/d3_horizon/layouts/d3_horizon_axes.html")
+rChart$setLib('http://timelyportfolio.github.io/rCharts_d3_horizon/libraries/widgets/d3_horizon')
+rChart$setTemplate(script = "http://timelyportfolio.github.io/rCharts_d3_horizon/libraries/widgets/d3_horizon/layouts/d3_horizon_axes.html")
 
 rChart$set(
   bands = 3,
